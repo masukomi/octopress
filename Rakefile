@@ -43,8 +43,19 @@ end
 
 desc "Generate jekyll site"
 task :generate do
-  puts "## Generating Site with Jekyll"
-  system "jekyll"
+  if File.exists?(source_dir) and File.exists?("#{source_dir}/_layouts")
+    puts "## Generating Site with Jekyll"
+    system "jekyll"
+  else
+    unless File.exists?(source_dir)
+      puts "## You must first create a '#{source_dir}' directory before running generate."
+      puts "Try running new_post['example title'] or new_page[example_page.markdown] first."
+    end
+    unless File.exists?("#{source_dir}/_layouts")
+      puts "## The '#{source_dir}/_layouts' directory is missing. "
+      puts "Have you run 'rake install' yet?"
+    end
+  end
 end
 
 desc "Watch the site and regenerate when it changes"
